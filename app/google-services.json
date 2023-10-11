@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "552986823848",
+    "project_id": "towntalk-dashboard",
+    "storage_bucket": "towntalk-dashboard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552986823848:android:f1c3a88479c15b7944069d",
+        "android_client_info": {
+          "package_name": "com.example.towntalkdashboard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcCkFgLqT8Ox-vYEGf-aVAEqSqh0krfsM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
