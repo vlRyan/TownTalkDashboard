@@ -6,32 +6,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
-    android:background="#444444">
+    android:background="#333333">
 
     <TextView
         android:id="@+id/recentReportsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recent Reports"
-        android:textColor="#fefefe"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        android:text="@string/recent_reports"
+        android:textColor="#ffffff"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/postContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintHorizontal_bias="0.234"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666" />
+        app:layout_constraintVertical_bias="0.375" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="365dp"
-        android:layout_height="680dp"
+        android:id="@+id/postContainer"
+        android:layout_width="300dp"
+        android:layout_height="682dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-
-    <!-- Add other views and constraints as needed -->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

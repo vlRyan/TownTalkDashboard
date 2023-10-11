@@ -18,5 +18,11 @@
     <string name="create_account">Create Account</string>
 
     <string name="back">Back</string>
+    <string name="my_reports">My Reports</string>
+    <string name="log_out">Log Out</string>
+    <string name="recent_reports">Recent Reports</string>
+    <string name="topic">Topic</string>
+    <string name="description">Description</string>
+    <string name="upload_media">Upload Media</string>
 
 </resources>
