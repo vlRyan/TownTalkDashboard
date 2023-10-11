@@ -6,7 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import com.example.towntalkdashboard.databinding.FragmentProfileBinding
+import com.google.firebase.auth.FirebaseAuth
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,6 +20,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ProfileFragment : Fragment() {
+
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var binding: FragmentProfileBinding
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,8 +40,21 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        binding.logoutBtn.setOnClickListener {
+            firebaseAuth.signOut()
+            val intent = Intent(requireContext(), LoginPage::class.java)
+            startActivity(intent)
+
+            requireActivity().finish()
+        }
+
+        return view
     }
 
     companion object {
