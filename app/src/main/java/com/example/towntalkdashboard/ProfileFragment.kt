@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import com.example.towntalkdashboard.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -45,6 +47,13 @@ class ProfileFragment : Fragment() {
         val view = binding.root
 
         firebaseAuth = FirebaseAuth.getInstance()
+
+        val goToMyReport = binding.numberOfReport // Use binding to find the view
+
+        goToMyReport.setOnClickListener {
+            val intent = Intent(requireContext(), MyReportPage::class.java)
+            startActivity(intent)
+        }
 
         binding.logoutBtn.setOnClickListener {
             firebaseAuth.signOut()

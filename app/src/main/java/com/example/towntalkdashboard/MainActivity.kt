@@ -1,5 +1,6 @@
 package com.example.towntalkdashboard
 
+import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,7 +21,10 @@ class MainActivity : AppCompatActivity() {
 
             when(it.itemId){
                 R.id.navigation_home -> replaceFragment(HomeFragment())
-                R.id.navigation_report -> replaceFragment(ReportFragment())
+                R.id.navigation_report -> {
+                    val intent = Intent(this, SubmitReportPage::class.java)
+                    startActivity(intent)
+                }
                 R.id.navigation_profile -> replaceFragment(ProfileFragment())
 
                 else ->{
