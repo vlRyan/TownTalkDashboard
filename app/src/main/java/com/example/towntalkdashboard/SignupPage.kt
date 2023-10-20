@@ -12,6 +12,7 @@ class SignupPage : AppCompatActivity() {
 
     private lateinit var binding:ActivitySignupPageBinding
     private lateinit var firebaseAuth:FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,9 +31,10 @@ class SignupPage : AppCompatActivity() {
             val username = binding.usernameInput.text.toString()
             val email = binding.emailInput.text.toString()
             val password = binding.passwordInput.text.toString()
+            val phone = binding.phoneInput.text.toString()
             val confirmPassword = binding.confirmPasswordInput.text.toString()
 
-            if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
+            if (username.isNotEmpty() && phone.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
                 if (password == confirmPassword){
                     firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener{
                         if(it.isSuccessful){

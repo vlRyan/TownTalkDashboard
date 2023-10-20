@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/topicTextView" />
 
     <TextView
-        android:id="@+id/descriptionReportInput"
+        android:id="@+id/descriptionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/topicReportInput" />
 
     <EditText
-        android:id="@+id/userInputEditText"
+        android:id="@+id/descriptionReportInput"
         android:layout_width="300dp"
         android:layout_height="198dp"
         android:layout_marginTop="4dp"
@@ -75,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionReportInput" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
 
     <TextView
         android:id="@+id/textView3"
@@ -88,10 +88,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.217"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userInputEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionReportInput" />
 
     <LinearLayout
-        android:id="@+id/uploadMediaContainer"
+        android:id="@+id/uploadMediaButton"
         android:layout_width="300dp"
         android:layout_height="76dp"
         android:layout_marginTop="4dp"
@@ -99,22 +99,22 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <ImageView
-            android:id="@+id/uploadMediaImageView"
+            android:id="@+id/uploadMediaImage"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:clickable="true"
-            android:onClick="onUploadMediaClick"
             android:src="@drawable/baseline_image_24" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/submitButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button"
@@ -125,7 +125,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uploadMediaContainer"
+        app:layout_constraintTop_toBottomOf="@+id/uploadMediaButton"
         app:layout_constraintVertical_bias="0.484" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
