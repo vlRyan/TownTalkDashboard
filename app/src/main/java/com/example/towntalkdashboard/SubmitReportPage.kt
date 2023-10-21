@@ -5,11 +5,14 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class SubmitReportPage : AppCompatActivity() {
 
@@ -35,12 +38,10 @@ class SubmitReportPage : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Get a Firestore instance
         val db = FirebaseFirestore.getInstance()
-
         // Reference to the "reports" collection
         val reportsCollection = db.collection("reports")
-        // Handle the submit button click
+
         titleEditText = findViewById<EditText>(R.id.topicReportInput)
         descriptionEditText = findViewById<EditText>(R.id.descriptionReportInput)
         uploadMediaButton = findViewById<LinearLayout>(R.id.uploadMediaButton)
@@ -51,7 +52,7 @@ class SubmitReportPage : AppCompatActivity() {
         uploadMediaButton.setOnClickListener {
             // Open a file picker or camera app to select media
             val mediaIntent = Intent(Intent.ACTION_GET_CONTENT)
-            mediaIntent.type = "image/*" // You can adjust the MIME type to your needs
+            mediaIntent.type = "image/*"
             startActivityForResult(mediaIntent, PICK_MEDIA_REQUEST)
         }
 
@@ -59,57 +60,72 @@ class SubmitReportPage : AppCompatActivity() {
             val title = titleEditText.text.toString()
             val description = descriptionEditText.text.toString()
 
-            if (title.isNotEmpty() && description.isNotEmpty()) {
-                if (mediaUri != null) {
-                    // Media is selected, upload it to Firebase Storage or your preferred service
-                    // For Firebase Storage upload, refer to Firebase documentation
-                    // ...
+            // Check if media URI is not null
+            if (mediaUri != null) {
+                val storageRef = FirebaseStorage.getInstance().reference
+                val mediaFileName = "picture"
+                val mediaRef = storageRef.child(mediaFileName)
+                mediaRef.putFile(mediaUri!!)
+                    .addOnSuccessListener { taskSnapshot ->
+                        // Media uploaded successfully; get the download URL
+                        mediaRef.downloadUrl
+                            .addOnSuccessListener { uri ->
+                                val mediaURL = uri.toString()
 
-                    // Once the media is uploaded, you can get the download URL
-                    val mediaURL = "your_media_download_url_here"
+                                // Now, you have the actual media URL
 
-                    // Create a new report document
-                    val report = hashMapOf(
-                        "title" to title,
-                        "description" to description,
-                        "mediaURL" to mediaURL
-                    )
+                                // Create a new report document and add it to Firestore
+                                val report = hashMapOf(
+                                    "title" to title,
+                                    "description" to description,
+                                    "mediaURL" to mediaURL,
+                                    "timestamp" to FieldValue.serverTimestamp()
+                                )
 
-                    // Add the report to Firestore
-                    reportsCollection.add(report)
-                        .addOnSuccessListener { documentReference ->
-                            // Report added successfully
-                            // Optionally, navigate back to HomeFragment or refresh the list.
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                        .addOnFailureListener { e ->
-                            // Handle the error
-                        }
-                } else {
-                    // Media is not selected, you can proceed without media
-                    // Create a new report document
-                    val report = hashMapOf(
-                        "title" to title,
-                        "description" to description
-                    )
-                    // Add the report to Firestore
-                    reportsCollection.add(report)
-                        .addOnSuccessListener { documentReference ->
-                            // Report added successfully
-                            // Optionally, navigate back to HomeFragment or the main activity
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish() // Close the SubmitReportPage
-                        }
-                        .addOnFailureListener { e ->
-                            // Handle the error
-                        }
-                }
+                                reportsCollection.add(report)
+                                    .addOnSuccessListener { documentReference ->
+                                        // Report added successfully
+                                        // Optionally, navigate back to HomeFragment or refresh the list.
+                                        val intent = Intent(this, MainActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        // Handle the error
+                                    }
+                            }
+                            .addOnFailureListener { e ->
+                                // Handle the error in getting the download URL
+                            }
+                    }
+                    .addOnFailureListener { e ->
+                        // Handle the error in uploading media
+                    }
+            } else {
+                // Media is not selected, you can proceed without media
+                // Create a new report document
+                val report = hashMapOf(
+                    "title" to title,
+                    "timestamp" to FieldValue.serverTimestamp(),
+                    "description" to description
+                )
+                // Add the report to Firestore
+                reportsCollection.add(report)
+                    .addOnSuccessListener { documentReference ->
+                        // Report added successfully
+                        // Optionally, navigate back to HomeFragment or the main activity
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                    .addOnFailureListener { e ->
+                        // Handle the error
+                        Log.e("MediaUpload", "Error uploading media: $e")
+                    }
             }
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
