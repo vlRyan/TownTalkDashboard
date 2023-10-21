@@ -40,7 +40,7 @@ class ReportAdapter : ListAdapter<ReportAdapter.Report, ReportAdapter.ReportView
                     .error(R.drawable.baseline_image_24) // Error image (if loading fails)
                     .into(mediaImageView)
             } else {
-                mediaImageView.setImageResource(R.drawable.baseline_image_24)
+                mediaImageView.visibility = View.GONE
             }
         }
     }

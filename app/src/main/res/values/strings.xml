@@ -25,5 +25,7 @@
     <string name="description">Description</string>
     <string name="upload_media">Upload Media</string>
     <string name="phone">Phone</string>
+    <string name="read_more">Read more</string>
+    <string name="title">Title</string>
 
 </resources>
