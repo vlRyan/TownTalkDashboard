@@ -10,19 +10,24 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import java.util.UUID
+import androidx.activity.result.ActivityResultLauncher
 
-class SubmitReportPage : AppCompatActivity() {
+class UserSubmitReport : AppCompatActivity() {
 
     private lateinit var titleEditText: EditText
     private lateinit var descriptionEditText: EditText
     private lateinit var submitButton: Button
     private lateinit var uploadMediaButton: LinearLayout
     private lateinit var uploadMediaImage: ImageView
-
+    private lateinit var imagePickerActivityResult: ActivityResultLauncher<Intent>
     private var mediaUri: Uri? = null
+    private var submissionInProgress = false
 
     companion object {
         const val PICK_MEDIA_REQUEST = 1
@@ -30,16 +35,15 @@ class SubmitReportPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_submit_report_page)
+        setContentView(R.layout.activity_user_submit_report)
 
         val backButton = findViewById<Button>(R.id.backBtn)
         backButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, Navigation::class.java)
             startActivity(intent)
         }
 
         val db = FirebaseFirestore.getInstance()
-        // Reference to the "reports" collection
         val reportsCollection = db.collection("reports")
 
         titleEditText = findViewById<EditText>(R.id.topicReportInput)
@@ -48,32 +52,45 @@ class SubmitReportPage : AppCompatActivity() {
         uploadMediaImage = findViewById<ImageView>(R.id.uploadMediaImage)
         submitButton = findViewById<Button>(R.id.submitButton)
 
-        // Handle media upload button click
+        imagePickerActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // Handle the selected media here
+                mediaUri = result.data?.data
+                // Update the UI or do something with the selected media
+                uploadMediaImage.setImageResource(R.drawable.baseline_cloud_done_24)
+            }
+        }
+
         uploadMediaButton.setOnClickListener {
-            // Open a file picker or camera app to select media
-            val mediaIntent = Intent(Intent.ACTION_GET_CONTENT)
+            // Open a file picker or camera app to select image
+            val mediaIntent = Intent(Intent.ACTION_PICK)
             mediaIntent.type = "image/*"
-            startActivityForResult(mediaIntent, PICK_MEDIA_REQUEST)
+            imagePickerActivityResult.launch(mediaIntent)
         }
 
         submitButton.setOnClickListener {
+            if (submissionInProgress) {
+                // Submission is already in progress, prevent double submission
+                return@setOnClickListener
+            }
+
             val title = titleEditText.text.toString()
             val description = descriptionEditText.text.toString()
 
             // Check if media URI is not null
             if (mediaUri != null) {
+                submissionInProgress = true // Set the flag to indicate submission is in progress
+
                 val storageRef = FirebaseStorage.getInstance().reference
-                val mediaFileName = "picture"
+                val mediaFileName = UUID.randomUUID().toString()
                 val mediaRef = storageRef.child(mediaFileName)
+
                 mediaRef.putFile(mediaUri!!)
                     .addOnSuccessListener { taskSnapshot ->
                         // Media uploaded successfully; get the download URL
                         mediaRef.downloadUrl
                             .addOnSuccessListener { uri ->
                                 val mediaURL = uri.toString()
-
-                                // Now, you have the actual media URL
-
                                 // Create a new report document and add it to Firestore
                                 val report = hashMapOf(
                                     "title" to title,
@@ -85,42 +102,54 @@ class SubmitReportPage : AppCompatActivity() {
                                 reportsCollection.add(report)
                                     .addOnSuccessListener { documentReference ->
                                         // Report added successfully
-                                        // Optionally, navigate back to HomeFragment or refresh the list.
-                                        val intent = Intent(this, MainActivity::class.java)
+                                        val intent = Intent(this, Navigation::class.java)
                                         startActivity(intent)
+                                        Toast.makeText(this, "Report submitted successfully", Toast.LENGTH_SHORT).show()
                                         finish()
                                     }
                                     .addOnFailureListener { e ->
                                         // Handle the error
+                                        Log.e("Firestore", "Error adding report: $e")
+                                        Toast.makeText(this, "Error submitting report: $e", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnCompleteListener {
+                                        submissionInProgress = false // Reset the submission flag
                                     }
                             }
                             .addOnFailureListener { e ->
                                 // Handle the error in getting the download URL
+                                Log.e("Storage", "Error getting download URL: $e")
+                                Toast.makeText(this, "Error getting media download URL: $e", Toast.LENGTH_SHORT).show()
                             }
                     }
                     .addOnFailureListener { e ->
                         // Handle the error in uploading media
+                        Log.e("Storage", "Error uploading media: $e")
+                        Toast.makeText(this, "Error uploading media: $e", Toast.LENGTH_SHORT).show()
                     }
             } else {
                 // Media is not selected, you can proceed without media
-                // Create a new report document
                 val report = hashMapOf(
                     "title" to title,
                     "timestamp" to FieldValue.serverTimestamp(),
                     "description" to description
                 )
+                submissionInProgress = true // Set the flag to indicate submission is in progress
+
                 // Add the report to Firestore
                 reportsCollection.add(report)
                     .addOnSuccessListener { documentReference ->
-                        // Report added successfully
-                        // Optionally, navigate back to HomeFragment or the main activity
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, Navigation::class.java)
                         startActivity(intent)
                         finish()
                     }
                     .addOnFailureListener { e ->
                         // Handle the error
                         Log.e("MediaUpload", "Error uploading media: $e")
+                        Toast.makeText(this, "Error submitting report: $e", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnCompleteListener {
+                        submissionInProgress = false // Reset the submission flag
                     }
             }
         }
@@ -131,9 +160,6 @@ class SubmitReportPage : AppCompatActivity() {
 
         if (requestCode == PICK_MEDIA_REQUEST && resultCode == Activity.RESULT_OK) {
             mediaUri = data?.data
-
-            // Update the UI to indicate that media is selected (e.g., change the ImageView)
-            uploadMediaImage.setImageResource(R.drawable.baseline_cloud_done_24)
         }
     }
 }

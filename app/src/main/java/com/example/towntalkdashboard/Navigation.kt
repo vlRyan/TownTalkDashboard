@@ -5,17 +5,17 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuInflater
-import com.example.towntalkdashboard.databinding.ActivityMainBinding
+import com.example.towntalkdashboard.databinding.ActivityNavigationBinding
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
-class MainActivity : AppCompatActivity() {
+class Navigation : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityNavigationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         FirebaseApp.initializeApp(this)
@@ -32,18 +32,17 @@ class MainActivity : AppCompatActivity() {
             bottomNavigationView.inflateMenu(R.menu.bottom_navigation)
         }
 
-        replaceFragment(HomeFragment())
+        replaceFragment(HomePage())
 
         binding.bottomNavigationView.setOnItemSelectedListener {
-
             when(it.itemId){
-                R.id.navigation_home -> replaceFragment(HomeFragment())
+                R.id.navigation_home -> replaceFragment(HomePage())
                 R.id.navigation_report -> {
-                    val intent = Intent(this, SubmitReportPage::class.java)
+                    val intent = Intent(this, UserSubmitReport::class.java)
                     startActivity(intent)
                 }
                 R.id.navigation_read_report -> replaceFragment(AdminCheckReport())
-                R.id.navigation_profile -> replaceFragment(ProfileFragment())
+                R.id.navigation_profile -> replaceFragment(ProfilePage())
                 else ->{
 
                 }

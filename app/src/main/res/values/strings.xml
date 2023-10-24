@@ -27,5 +27,6 @@
     <string name="phone">Phone</string>
     <string name="read_more">Read more</string>
     <string name="title">Title</string>
+    <string name="date">Date</string>
 
 </resources>

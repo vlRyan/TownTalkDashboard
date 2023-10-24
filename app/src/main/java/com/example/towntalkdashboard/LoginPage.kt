@@ -52,11 +52,13 @@ class LoginPage : AppCompatActivity() {
                             val user = firebaseAuth.currentUser
                             if (user?.email == ADMIN_EMAIL) {
                                 // This is the admin user
-                                val intent = Intent(this, MainActivity::class.java)
+                                val intent = Intent(this, Navigation::class.java)
                                 startActivity(intent)
+
+                                Toast.makeText(this, "Welcome Admin", Toast.LENGTH_SHORT).show()
                             } else {
                                 // This is a regular user
-                                val intent = Intent(this, MainActivity::class.java)
+                                val intent = Intent(this, Navigation::class.java)
                                 startActivity(intent)
                             }
                         } else {
@@ -72,7 +74,7 @@ class LoginPage : AppCompatActivity() {
         super.onStart()
 
         if(firebaseAuth.currentUser != null){
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, Navigation::class.java)
             startActivity(intent)
         }
     }

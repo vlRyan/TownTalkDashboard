@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import com.example.towntalkdashboard.databinding.FragmentProfileBinding
+import com.example.towntalkdashboard.databinding.FragmentProfilePageBinding
 import com.google.firebase.auth.FirebaseAuth
 
 // TODO: Rename parameter arguments, choose names that match
@@ -18,13 +16,13 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
+ * Use the [ProfilePage.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ProfileFragment : Fragment() {
+class ProfilePage : Fragment() {
 
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var binding: FragmentProfileBinding
+    private lateinit var binding: FragmentProfilePageBinding
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -43,7 +41,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        binding = FragmentProfilePageBinding.inflate(inflater, container, false)
         val view = binding.root
 
         firebaseAuth = FirebaseAuth.getInstance()
@@ -51,7 +49,7 @@ class ProfileFragment : Fragment() {
         val goToMyReport = binding.numberOfReport // Use binding to find the view
 
         goToMyReport.setOnClickListener {
-            val intent = Intent(requireContext(), MyReportPage::class.java)
+            val intent = Intent(requireContext(), UserReportPage::class.java)
             startActivity(intent)
         }
 
@@ -78,7 +76,7 @@ class ProfileFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
+            ProfilePage().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

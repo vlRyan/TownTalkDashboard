@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#333333"
     android:orientation="vertical"
-    tools:context=".SubmitReportPage">
+    tools:context=".UserSubmitReport">
 
     <Button
         android:id="@+id/backBtn"
@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/border"
         android:inputType="text"
+        android:paddingLeft="10dp"
         android:layout_gravity="center_horizontal"
         android:textColor="#ffffff"
         android:layout_marginTop="5dp"
@@ -53,7 +54,9 @@
         android:layout_height="300dp"
         android:background="@drawable/border"
         android:inputType="textMultiLine"
+        android:paddingLeft="10dp"
         android:lines="8"
+        android:gravity="top|start"
         android:layout_gravity="center_horizontal"
         android:textColor="#ffffff"
         android:layout_marginTop="5dp"
