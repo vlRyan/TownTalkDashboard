@@ -17,6 +17,11 @@ class LoginPage : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginPageBinding
     private lateinit var firebaseAuth: FirebaseAuth
+
+    companion object {
+        const val ADMIN_EMAIL = "admin@gmail.com"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginPageBinding.inflate(layoutInflater)
@@ -40,17 +45,25 @@ class LoginPage : AppCompatActivity() {
             val email = binding.emailInput.text.toString()
             val password = binding.passwordInput.text.toString()
 
-            if (email.isNotEmpty() && password.isNotEmpty()){
-                firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
-                    if(it.isSuccessful){
-                        val intent = Intent(this,MainActivity::class.java)
-                        startActivity(intent)
-                    }else{
-                        Toast.makeText(this,it.exception.toString(), Toast.LENGTH_SHORT).show()
-                    }
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                firebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val user = firebaseAuth.currentUser
+                            if (user?.email == ADMIN_EMAIL) {
+                                // This is the admin user
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                            } else {
+                                // This is a regular user
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                            }
+                        } else {
+                            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT)
+                                .show()
+                        }
                 }
-            }else{
-                Toast.makeText(this,"Empty", Toast.LENGTH_SHORT).show()
             }
         }
     }
