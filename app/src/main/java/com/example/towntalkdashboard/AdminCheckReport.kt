@@ -1,59 +1,75 @@
 package com.example.towntalkdashboard
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import androidx.fragment.app.Fragment
+import com.google.firebase.firestore.FirebaseFirestore
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AdminCheckReport.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AdminCheckReport : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val db = FirebaseFirestore.getInstance()
+    private val reportsCollection = db.collection("reports")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var reportsListView: ListView
+    private val reportTitles = ArrayList<String>()
+    private val reportDates = ArrayList<String>()
+    private val reportDescriptions = ArrayList<String>()
+    private val reportMediaURLs = ArrayList<String>()
+    private lateinit var reportsAdapter: ArrayAdapter<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_check_report, container, false)
+        val view = inflater.inflate(R.layout.fragment_admin_check_report, container, false)
+
+        reportsListView = view.findViewById(R.id.reportsListView)
+        reportsAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_list_item_2,
+            android.R.id.text1,
+            reportTitles
+        )
+        reportsListView.adapter = reportsAdapter
+
+        reportsListView.setOnItemClickListener(AdapterView.OnItemClickListener { _, _, position, _ ->
+            val intent = Intent(requireContext(), ReportDetailsPage::class.java)
+            intent.putExtra("title", reportTitles[position])
+            intent.putExtra("date", reportDates[position])
+            intent.putExtra("description", reportDescriptions[position])
+            intent.putExtra("mediaURL", reportMediaURLs[position])
+            startActivity(intent)
+        })
+
+        loadReports()
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AdminCheckReport.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AdminCheckReport().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun loadReports() {
+        reportsCollection.whereNotEqualTo("status", "Accepted")
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot) {
+                    val title = document.getString("title") ?: ""
+                    val date = document.getDate("timestamp")?.toString() ?: ""
+                    val description = document.getString("description") ?: ""
+                    val mediaURL = document.getString("mediaURL") ?: ""
+
+                    reportTitles.add(title)
+                    reportDates.add(date)
+                    reportDescriptions.add(description)
+                    reportMediaURLs.add(mediaURL)
                 }
+                reportsAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                // Handle the error here (e.g., log or display an error message)
             }
     }
 }

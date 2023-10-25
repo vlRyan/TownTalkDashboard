@@ -37,14 +37,9 @@ class UserSubmitReport : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_submit_report)
 
-        val backButton = findViewById<Button>(R.id.backBtn)
-        backButton.setOnClickListener {
-            val intent = Intent(this, Navigation::class.java)
-            startActivity(intent)
-        }
-
         val db = FirebaseFirestore.getInstance()
         val reportsCollection = db.collection("reports")
+        val backButton = findViewById<Button>(R.id.backBtn)
 
         titleEditText = findViewById<EditText>(R.id.topicReportInput)
         descriptionEditText = findViewById<EditText>(R.id.descriptionReportInput)
@@ -52,9 +47,14 @@ class UserSubmitReport : AppCompatActivity() {
         uploadMediaImage = findViewById<ImageView>(R.id.uploadMediaImage)
         submitButton = findViewById<Button>(R.id.submitButton)
 
+        backButton.setOnClickListener {
+            val intent = Intent(this, Navigation::class.java)
+            startActivity(intent)
+        }
+
         imagePickerActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // Handle the selected media here
+                // Handle the selected media
                 mediaUri = result.data?.data
                 // Update the UI or do something with the selected media
                 uploadMediaImage.setImageResource(R.drawable.baseline_cloud_done_24)
@@ -69,17 +69,16 @@ class UserSubmitReport : AppCompatActivity() {
         }
 
         submitButton.setOnClickListener {
-            if (submissionInProgress) {
-                // Submission is already in progress, prevent double submission
-                return@setOnClickListener
-            }
-
             val title = titleEditText.text.toString()
             val description = descriptionEditText.text.toString()
 
-            // Check if media URI is not null
+            // Prevent double submission
+            if (submissionInProgress) {
+                return@setOnClickListener
+            }
+
             if (mediaUri != null) {
-                submissionInProgress = true // Set the flag to indicate submission is in progress
+                submissionInProgress = true
 
                 val storageRef = FirebaseStorage.getInstance().reference
                 val mediaFileName = UUID.randomUUID().toString()
@@ -96,7 +95,8 @@ class UserSubmitReport : AppCompatActivity() {
                                     "title" to title,
                                     "description" to description,
                                     "mediaURL" to mediaURL,
-                                    "timestamp" to FieldValue.serverTimestamp()
+                                    "timestamp" to FieldValue.serverTimestamp(),
+                                    "status" to "Pending"
                                 )
 
                                 reportsCollection.add(report)
@@ -132,9 +132,10 @@ class UserSubmitReport : AppCompatActivity() {
                 val report = hashMapOf(
                     "title" to title,
                     "timestamp" to FieldValue.serverTimestamp(),
-                    "description" to description
+                    "description" to description,
+                    "status" to "Pending"
                 )
-                submissionInProgress = true // Set the flag to indicate submission is in progress
+                submissionInProgress = true
 
                 // Add the report to Firestore
                 reportsCollection.add(report)
@@ -149,12 +150,13 @@ class UserSubmitReport : AppCompatActivity() {
                         Toast.makeText(this, "Error submitting report: $e", Toast.LENGTH_SHORT).show()
                     }
                     .addOnCompleteListener {
-                        submissionInProgress = false // Reset the submission flag
+                        submissionInProgress = false
                     }
             }
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

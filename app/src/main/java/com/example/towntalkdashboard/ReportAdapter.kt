@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class ReportAdapter : ListAdapter<ReportAdapter.Report, ReportAdapter.ReportViewHolder>(ReportDiffCallback()) {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.report_item, parent, false)
         return ReportViewHolder(itemView)
@@ -48,6 +47,7 @@ class ReportAdapter : ListAdapter<ReportAdapter.Report, ReportAdapter.ReportView
     }
 
     data class Report(
+        val id: String,
         val title: String,
         val description: String,
         val mediaURL: String?,
