@@ -1,5 +1,6 @@
 package com.example.towntalkdashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +28,14 @@ class HomePage : Fragment() {
 
         recyclerView = view.findViewById(R.id.postContainer)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        reportAdapter = ReportAdapter()
+        val reportAdapter = ReportAdapter { report ->
+            val intent = Intent(requireContext(), HomeReadReportPage::class.java)
+            intent.putExtra("title", report.title)
+            intent.putExtra("date", report.date)
+            intent.putExtra("description", report.description)
+            intent.putExtra("mediaURL", report.mediaURL)
+            startActivity(intent)
+        }
         recyclerView.adapter = reportAdapter
 
         // Fetch reports from Firestore and update the adapter

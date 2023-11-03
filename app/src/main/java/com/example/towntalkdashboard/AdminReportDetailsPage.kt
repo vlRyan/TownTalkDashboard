@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ReportDetailsPage : AppCompatActivity() {
+class AdminReportDetailsPage : AppCompatActivity() {
     private lateinit var titleTextView: TextView
     private lateinit var dateTextView: TextView
     private lateinit var descriptionTextView: TextView
@@ -19,7 +19,7 @@ class ReportDetailsPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_report_details_page)
+        setContentView(R.layout.activity_admin_report_details_page)
 
         val backButton = findViewById<Button>(R.id.backBtn)
         backButton.setOnClickListener {

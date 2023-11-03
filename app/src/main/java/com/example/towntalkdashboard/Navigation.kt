@@ -29,7 +29,7 @@ class Navigation : AppCompatActivity() {
             menuInflater.inflate(R.menu.admin_bottom_navigation, bottomNavigationView.menu)
         } else {
             // Regular user, load regular layout
-            bottomNavigationView.inflateMenu(R.menu.bottom_navigation)
+            bottomNavigationView.inflateMenu(R.menu.user_bottom_navigation)
         }
 
         replaceFragment(HomePage())
@@ -42,7 +42,8 @@ class Navigation : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.navigation_read_report -> replaceFragment(AdminCheckReport())
-                R.id.navigation_profile -> replaceFragment(ProfilePage())
+                R.id.user_navigation_profile -> replaceFragment(UserProfilePage())
+                R.id.admin_navigation_profile -> replaceFragment(AdminProfilePage())
                 else ->{
 
                 }

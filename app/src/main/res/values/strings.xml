@@ -30,5 +30,21 @@
     <string name="date">Date</string>
     <string name="report_description">Report Description</string>
     <string name="report_title">Report Title</string>
+    <string name="admin">Admin</string>
+    <string name="zero">0</string>
+    <string name="home">Home</string>
+    <string name="reports">Reports</string>
+    <string name="profile">Profile</string>
+    <string name="report">Report</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="report_attached_media">Report Attached Media</string>
+    <string name="report_media_upload">Report Media Upload</string>
+    <string name="submit">Submit</string>
+    <string name="remove_post">Remove Post</string>
+    <string name="edit_post">Edit Post</string>
+    <string name="barangay_response">Barangay Response</string>
+    <string name="response">Response...</string>
 
 </resources>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".UserReportPage"
     android:orientation="vertical"
-    android:background="#333333">
+    android:background="@color/light_black">
 
     <Button
         android:id="@+id/backBtn"
@@ -14,15 +14,15 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:text="@string/back"
-        android:textColor="#FF2626" />
+        android:textColor="@color/red" />
 
     <TextView
         android:id="@+id/reportTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/my_reports"
-        android:textColor="#ffffff"
-        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"/>
 

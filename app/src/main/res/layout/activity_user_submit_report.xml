@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#333333"
+    android:background="@color/light_black"
     android:orientation="vertical"
     tools:context=".UserSubmitReport">
 
@@ -14,15 +14,16 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:text="@string/back"
-        android:textColor="#FF2626" />
+        android:textColor="@color/red" />
 
     <TextView
         android:id="@+id/topicTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/topic"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="10dp"
         android:textSize="25sp" />
 
@@ -33,8 +34,9 @@
         android:background="@drawable/border"
         android:inputType="text"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_gravity="center_horizontal"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:layout_marginTop="5dp"
         android:textSize="25sp" />
 
@@ -43,22 +45,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/description"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="20dp"
         android:textSize="25sp" />
 
     <EditText
         android:id="@+id/descriptionReportInput"
         android:layout_width="350dp"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@drawable/border"
         android:inputType="textMultiLine"
         android:paddingLeft="10dp"
-        android:lines="8"
+        android:paddingRight="10dp"
         android:gravity="top|start"
         android:layout_gravity="center_horizontal"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:layout_marginTop="5dp"
         android:textSize="25sp" />
 
@@ -67,8 +71,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/upload_media"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="20dp"
         android:textSize="25sp" />
 
@@ -89,7 +94,8 @@
             android:id="@+id/uploadMediaImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/baseline_image_24" />
+            android:src="@drawable/baseline_image_24"
+            android:contentDescription="@string/report_media_upload" />
 
     </LinearLayout>
 
@@ -98,10 +104,11 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button"
-        android:text="Submit"
+        android:text="@string/submit"
         android:layout_marginTop="40dp"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:layout_marginBottom="10dp"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

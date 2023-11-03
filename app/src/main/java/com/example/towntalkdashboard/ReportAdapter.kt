@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class ReportAdapter : ListAdapter<ReportAdapter.Report, ReportAdapter.ReportViewHolder>(ReportDiffCallback()) {
+class ReportAdapter(private val onReadMoreClick: (Report) -> Unit) : ListAdapter<ReportAdapter.Report, ReportAdapter.ReportViewHolder>(ReportDiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.report_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.home_report_item, parent, false)
         return ReportViewHolder(itemView)
     }
 
@@ -26,13 +27,13 @@ class ReportAdapter : ListAdapter<ReportAdapter.Report, ReportAdapter.ReportView
         private val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
         private val mediaImageView: ImageView = itemView.findViewById(R.id.mediaImageView)
         private val dateTextView: TextView = itemView.findViewById(R.id.dateTextView)
+        private val readMoreTextView: TextView = itemView.findViewById(R.id.readMoreTextView)
 
         fun bind(report: Report) {
             titleTextView.text = report.title
             descriptionTextView.text = report.description
             dateTextView.text = report.date
 
-            // Load and display media using Glide (or another image loading library)
             if (report.mediaURL != null) {
                 mediaImageView.visibility = View.VISIBLE
                 Glide.with(itemView)
@@ -40,8 +41,13 @@ class ReportAdapter : ListAdapter<ReportAdapter.Report, ReportAdapter.ReportView
                     .placeholder(R.drawable.baseline_image_24) // Placeholder image
                     .error(R.drawable.baseline_image_24) // Error image (if loading fails)
                     .into(mediaImageView)
-            } else if (report.mediaURL == null) {
+            } else {
                 mediaImageView.visibility = View.GONE
+            }
+
+            // Handle "Read more" button click
+            readMoreTextView.setOnClickListener {
+                onReadMoreClick(report)
             }
         }
     }
