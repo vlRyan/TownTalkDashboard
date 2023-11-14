@@ -53,9 +53,8 @@ class AdminReportDetailsPage : AppCompatActivity() {
 
         acceptButton.setOnClickListener {
             // Handle accept button
-            updateReportStatus("Accepted")
-
-            val intent = Intent (this, Navigation::class.java)
+            val intent = Intent(this, AdminReportResponsePage::class.java)
+            intent.putExtra("title", title)
             startActivity(intent)
         }
 
@@ -66,32 +65,6 @@ class AdminReportDetailsPage : AppCompatActivity() {
             val intent = Intent (this, Navigation::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun updateReportStatus(newStatus: String) {
-        val db = FirebaseFirestore.getInstance()
-        val reportsCollection = db.collection("reports")
-
-        val title = intent.getStringExtra("title")
-
-        // Update the report status
-        reportsCollection.whereEqualTo("title", title)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                for (document in querySnapshot) {
-                    val reportId = document.id
-                    reportsCollection.document(reportId).update("status", newStatus)
-                        .addOnSuccessListener {
-                            // Report status updated successfully
-                        }
-                        .addOnFailureListener { e ->
-                            // Handle the error
-                        }
-                }
-            }
-            .addOnFailureListener { e ->
-                // Handle the error
-            }
     }
 
     private fun deleteReport() {

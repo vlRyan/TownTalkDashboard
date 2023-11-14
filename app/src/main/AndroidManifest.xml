@@ -17,6 +17,9 @@
         android:theme="@style/Theme.TownTalkDashboard"
         tools:targetApi="31">
         <activity
+            android:name=".AdminReportResponsePage"
+            android:exported="false" />
+        <activity
             android:name=".HomeReadReportPage"
             android:exported="false" />
         <activity

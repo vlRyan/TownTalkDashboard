@@ -46,5 +46,7 @@
     <string name="edit_post">Edit Post</string>
     <string name="barangay_response">Barangay Response</string>
     <string name="response">Response...</string>
+    <string name="enter_barangay_response">Enter Barangay Response</string>
+    <string name="submit_response">Submit Response</string>
 
 </resources>
