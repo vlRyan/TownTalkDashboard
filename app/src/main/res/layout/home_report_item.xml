@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".HomeReportItem"
+    android:background="@drawable/border"
     android:padding="16dp"
     android:layout_margin="8dp">
 
@@ -22,7 +23,7 @@
             android:layout_height="wrap_content"
             android:text="@string/title"
             android:textSize="20sp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:maxLines="1"
             android:ellipsize="end" />
 
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="@string/date"
             android:textSize="15sp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:maxLines="1"
             android:ellipsize="end" />
 
@@ -44,7 +45,7 @@
         android:layout_height="wrap_content"
         android:text="@string/description"
         android:textSize="16sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:maxLines="3"
         android:ellipsize="end"
         android:layout_marginBottom="8dp" />

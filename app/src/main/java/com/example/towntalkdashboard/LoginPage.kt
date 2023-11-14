@@ -60,6 +60,8 @@ class LoginPage : AppCompatActivity() {
                                 // This is a regular user
                                 val intent = Intent(this, Navigation::class.java)
                                 startActivity(intent)
+
+                                Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show()
                             }
                         } else {
                             Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT)

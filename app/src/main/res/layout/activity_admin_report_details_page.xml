@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".AdminReportDetailsPage"
-    android:background="@color/light_black">
+    android:background="@color/white">
 
     <Button
         android:id="@+id/backBtn"
@@ -25,7 +25,7 @@
             android:id="@+id/reportTitleTextView"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="@string/report_title"
             android:textSize="20sp"
@@ -36,7 +36,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/date"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="15sp"
             android:padding="8dp" />
 
@@ -47,15 +47,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="@string/report_description"
         android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/mediaImageView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_gravity="center"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
         android:scaleType="centerCrop"
         android:contentDescription="@string/report_attached_media" />
 

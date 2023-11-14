@@ -3,7 +3,6 @@ package com.example.towntalkdashboard
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuInflater
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -44,18 +43,19 @@ class HomeReadReportPage : AppCompatActivity() {
                 .into(mediaImageView)
         }
 
+        if (mediaURL != null) {
+            mediaImageView.visibility = View.VISIBLE
+        }
+
         val user = FirebaseAuth.getInstance().currentUser
         if (user?.email == LoginPage.ADMIN_EMAIL) {
             // Admin user, load admin layout
             val container = findViewById<LinearLayout>(R.id.container)
             container.visibility = View.VISIBLE
 
-            val barangayResponseText = findViewById<TextView>(R.id.barangay_response)
-            val responseText = findViewById<TextView>(R.id.response)
             val editPostButton = findViewById<Button>(R.id.edit_post_button)
             val removePostButton = findViewById<Button>(R.id.remove_post_button)
-            barangayResponseText.visibility = View.VISIBLE
-            responseText.visibility = View.VISIBLE
+
             editPostButton.visibility = View.VISIBLE
             removePostButton.visibility = View.VISIBLE
         } else {
