@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.DocumentSnapshot
+import java.util.Date
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 
 class ReportAdapter(private val onReadMoreClick: (Report) -> Unit) : ListAdapter<ReportAdapter.Report, ReportAdapter.ReportViewHolder>(ReportDiffCallback()) {
 
@@ -58,7 +63,27 @@ class ReportAdapter(private val onReadMoreClick: (Report) -> Unit) : ListAdapter
         val description: String,
         val mediaURL: String?,
         val date: String
-    )
+    ) {
+        companion object {
+            fun fromDocumentSnapshot(documentSnapshot: DocumentSnapshot): Report {
+                val id = documentSnapshot.id
+                val title = documentSnapshot.getString("title") ?: ""
+                val description = documentSnapshot.getString("description") ?: ""
+                val mediaURL = documentSnapshot.getString("mediaURL")
+                val timestamp = documentSnapshot.getDate("timestamp")
+                val formattedDate = formatDate(timestamp)
+                return Report(id, title, description, mediaURL, formattedDate)
+            }
+
+            private fun formatDate(date: Date?): String {
+                date?.let {
+                    val sdf = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+                    return sdf.format(date)
+                }
+                return ""
+            }
+        }
+    }
 
     class ReportDiffCallback : DiffUtil.ItemCallback<Report>() {
         override fun areItemsTheSame(oldItem: Report, newItem: Report): Boolean {

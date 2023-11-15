@@ -59,6 +59,7 @@
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:scaleType="centerCrop"
+        android:visibility="gone"
         android:contentDescription="@string/report_attached_media" />
 
     <LinearLayout
